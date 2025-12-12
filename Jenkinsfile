@@ -10,8 +10,26 @@ pipeline{
     stage('checkout')
     {
       steps{
-        git url:
+        git(url:"https://github.com/usn1ms24mc023/first_project",branch:"main",credentialsId:"dockerid")
+      }
+   }
+    stage('Build')
+    {
+      steps{
+        script{
+          dockerImage=docker.build("${IMAGE_NAME}:latest)
+        }
       }
     }
+    stage('push')
+  {
+    steps{
+      script{
+      docker.withRegistry('https://index.docker.io/v1/','dockerid'){
+        dockerImage.push()
+      }
+      }
+    }
+  }
   }
 }
